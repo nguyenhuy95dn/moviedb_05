@@ -14,7 +14,6 @@ public class ExampleInstrumentedTest {
     @Test
     public void useAppContext() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
-
         assertEquals("com.framgia.moviedb_05", appContext.getPackageName());
     }
 }
