@@ -11,4 +11,9 @@
     <string name="action_exit">Exit</string>
     <string name="menu_search">Search</string>
     <string name="action_preferences">Preferences</string>
+    <string name="title_now_playing">Now Playing</string>
+    <string name="title_favorites">Favorites</string>
+    <string name="title_movie">Title</string>
+    <string name="title_type">Type</string>
+    <string name="title_date">Date</string>
 </resources>

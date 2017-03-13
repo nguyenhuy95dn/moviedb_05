@@ -13,4 +13,11 @@
     <dimen name="spinner_margin_end">51dp</dimen>
     <dimen name="spinner_width">135dp</dimen>
     <dimen name="text_language_margin">47dp</dimen>
+    <dimen name="dp3">3dp</dimen>
+    <dimen name="dp180">180dp</dimen>
+    <dimen name="dp120">120dp</dimen>
+    <dimen name="dp90">90dp</dimen>
+    <dimen name="dp10">10dp</dimen>
+    <dimen name="dp22">22dp</dimen>
+    <dimen name="dp30">30dp</dimen>
 </resources>
