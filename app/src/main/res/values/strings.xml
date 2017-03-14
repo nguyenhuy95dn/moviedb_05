@@ -14,6 +14,10 @@
     <string name="title_now_playing">Now Playing</string>
     <string name="title_favorites">Favorites</string>
     <string name="title_movie">Title</string>
+    <string name="title_overview_description">Overview description</string>
     <string name="title_type">Type</string>
     <string name="title_date">Date</string>
+    <string name="title_related_movie">Related Movies</string>
+    <string name="movie_detail">movie_detail</string>
+    <string name="msg_error">Not load the data</string>
 </resources>

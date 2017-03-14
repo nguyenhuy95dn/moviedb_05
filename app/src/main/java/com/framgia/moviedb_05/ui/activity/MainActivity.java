@@ -1,13 +1,13 @@
 package com.framgia.moviedb_05.ui.activity;
 
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -56,39 +56,13 @@ public class MainActivity extends AppCompatActivity
 
     private void setupViewPager(ViewPager viewPager) {
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        mAdapter.addFragment(NowPlayingFragment.newInstance(), getResources().getString(R.string.title_now_playing));
-        mAdapter.addFragment(FavoritesFragment.newInstance(), getResources().getString(R.string.title_favorites));
+        mAdapter.addFragment(NowPlayingFragment.newInstance(),
+            getResources().getString(R.string.title_now_playing));
+        mAdapter.addFragment(FavoritesFragment.newInstance(),
+            getResources().getString(R.string.title_favorites));
         viewPager.setAdapter(mAdapter);
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private List<Fragment> mFragment = new ArrayList<>();
-        private List<String> mTitle = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragment.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragment.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragment.add(fragment);
-            mTitle.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mTitle.get(position);
-        }
-    }
     @Override
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -131,5 +105,34 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
         return true;
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private List<Fragment> mFragment = new ArrayList<>();
+        private List<String> mTitle = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragment.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragment.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragment.add(fragment);
+            mTitle.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mTitle.get(position);
+        }
     }
 }
