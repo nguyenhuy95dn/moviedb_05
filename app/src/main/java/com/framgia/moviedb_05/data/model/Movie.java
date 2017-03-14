@@ -21,7 +21,8 @@ public class Movie {
     @SerializedName("backdrop_path")
     private String mBackdropPath;
 
-    public Movie(String posterPath, String overview, String releaseDate, List<Integer> genreIds, Integer id, String title, String backdropPath) {
+    public Movie(String posterPath, String overview, String releaseDate, List<Integer> genreIds,
+                 Integer id, String title, String backdropPath) {
         this.mPosterPath = posterPath;
         this.mOverview = overview;
         this.mReleaseDate = releaseDate;

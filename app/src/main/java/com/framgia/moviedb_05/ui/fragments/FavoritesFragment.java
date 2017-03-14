@@ -8,13 +8,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.framgia.moviedb_05.R;
 
 public class FavoritesFragment extends Fragment {
-
     public static FavoritesFragment newInstance() {
         return new FavoritesFragment();
     }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,9 +29,10 @@ public class FavoritesFragment extends Fragment {
         initViews(view);
         return view;
     }
+
     private void initViews(View v) {
         RecyclerView recyclerView =
-            (RecyclerView) v.findViewById(R.id.re_view_favorites);
+            (RecyclerView) v.findViewById(R.id.recycler_favorites);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 }

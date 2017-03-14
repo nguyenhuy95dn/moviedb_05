@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.framgia.moviedb_05.R;
 import com.framgia.moviedb_05.data.model.Movie;
 import com.framgia.moviedb_05.service.ServiceGenerator;
@@ -15,7 +16,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.ViewHolder>implements View.OnClickListener {
+public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.ViewHolder> {
     private List<Movie> mMovies;
     private LayoutInflater mLayoutInflater;
     private Context mContext;
@@ -38,17 +39,17 @@ public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Movie movie=mMovies.get(position);
+        Movie movie = mMovies.get(position);
         holder.bindData(movie);
     }
 
     @Override
     public int getItemCount() {
-        return mMovies.size();
+        return mMovies == null ? 0 : mMovies.size();
     }
 
-    @Override
-    public void onClick(View v) {
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mItemClickListener = listener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -56,17 +57,18 @@ public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.Vi
         private TextView mType;
         private TextView mDate;
         private ImageView mImageView;
+
         public ViewHolder(View itemView) {
             super(itemView);
             mTitle = (TextView) itemView.findViewById(R.id.text_title);
             mType = (TextView) itemView.findViewById(R.id.text_type);
             mDate = (TextView) itemView.findViewById(R.id.text_date);
-            mImageView= (ImageView) itemView.findViewById(R.id.image_item);
+            mImageView = (ImageView) itemView.findViewById(R.id.image_item);
             itemView.setOnClickListener(this);
         }
 
         public void bindData(Movie movie) {
-            if(movie==null) return;
+            if (movie == null) return;
             mTitle.setText(movie.getTitle());
             mDate.setText(movie.getReleaseDate());
             Picasso.with(mContext)
@@ -78,11 +80,8 @@ public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.Vi
         @Override
         public void onClick(View v) {
             if (mItemClickListener != null) {
-                mItemClickListener.onItemClick(v, getPosition());
+                mItemClickListener.onItemClick(mMovies.get(getPosition()));
             }
         }
-    }
-    public void SetOnItemClickListener(final OnItemClickListener listener) {
-        this.mItemClickListener = listener;
     }
 }
