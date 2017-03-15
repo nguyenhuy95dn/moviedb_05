@@ -12,15 +12,17 @@ import com.framgia.moviedb_05.R;
 import com.framgia.moviedb_05.service.ServiceGenerator;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 /**
  * Created by Age on 3/10/2017.
  */
 public class CustomPagerAdapter extends PagerAdapter {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    private String[] mImageUrl;
+    private List<String> mImageUrl;
 
-    public CustomPagerAdapter(Context context, String[] imageUrl) {
+    public CustomPagerAdapter(Context context, List<String> imageUrl) {
         mContext = context;
         mImageUrl = imageUrl;
         mLayoutInflater = LayoutInflater.from(context);
@@ -28,7 +30,7 @@ public class CustomPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return mImageUrl == null ? 0 : mImageUrl.length;
+        return mImageUrl == null ? 0 : mImageUrl.size();
     }
 
     @Override
@@ -42,7 +44,7 @@ public class CustomPagerAdapter extends PagerAdapter {
         assert v != null;
         ImageView imageView = (ImageView) v.findViewById(R.id.image_poster_backdrop);
         Picasso.with(mContext)
-            .load(ServiceGenerator.BASE_IMAGE_URL + mImageUrl[position])
+            .load(ServiceGenerator.BASE_IMAGE_URL + mImageUrl.get(position))
             .placeholder(R.drawable.bg_no_img)
             .into(imageView);
         container.addView(v, 0);
