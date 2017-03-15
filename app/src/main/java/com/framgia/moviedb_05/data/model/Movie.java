@@ -15,6 +15,8 @@ public class Movie implements Serializable {
     private String mReleaseDate;
     @SerializedName("genre_ids")
     private List<Integer> mGenreIds = new ArrayList<Integer>();
+    @SerializedName("genres")
+    private List<Genre> mGenres;
     @SerializedName("id")
     private Integer mId;
     @SerializedName("title")
@@ -79,6 +81,14 @@ public class Movie implements Serializable {
 
     public void setTitle(String title) {
         this.mTitle = title;
+    }
+
+    public List<Genre> getGenres() {
+        return mGenres;
+    }
+
+    public void setGenres(List<Genre> genres) {
+        mGenres = genres;
     }
 
     public String getBackdropPath() {
