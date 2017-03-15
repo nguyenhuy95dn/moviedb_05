@@ -2,6 +2,7 @@ package com.framgia.moviedb_05.service;
 
 import com.framgia.moviedb_05.data.model.Movie;
 import com.framgia.moviedb_05.data.model.MoviesResponse;
+import com.framgia.moviedb_05.data.model.RelatedMovieResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -16,4 +17,7 @@ public interface MovieService {
     Call<MoviesResponse> getNowPlayingMovies(@Query(API_KEY) String apiKey, @Query(PAGE) int pages);
     @GET("movie/{movie_id}")
     Call<Movie> getMovieDetails(@Path(MOVIE_ID) int id, @Query(API_KEY) String apiKey);
+    @GET("genre/{genre_id}/movies")
+    Call<RelatedMovieResponse> getRelatedMovie(@Path("genre_id") int genre_id,
+                                               @Query("api_key") String apiKey);
 }

@@ -62,7 +62,8 @@ public class NowPlayingFragment extends Fragment {
     }
 
     private void setupRecycleView() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mAdapter = new NowPlayingAdapter(mMovies, R.layout.item_list, getContext());
+        mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(Movie movie) {
@@ -80,6 +81,7 @@ public class NowPlayingFragment extends Fragment {
                 @Override
                 public void onResponse(Call<MoviesResponse> call,
                                        Response<MoviesResponse> response) {
+                    if (response == null || response.body() == null)
                     loadDataView(response.body());
                 }
 
