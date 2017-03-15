@@ -23,7 +23,7 @@ public class RelatedMovieAdapter extends RecyclerView.Adapter<RelatedMovieAdapte
     private Context mContext;
     private int mRowLayout;
 
-    public RelatedMovieAdapter(List<RelatedMovie> relatedMovies, int rowLayout, Context context) {
+    public RelatedMovieAdapter(Context context, int rowLayout, List<RelatedMovie> relatedMovies) {
         this.mRelatedMovies = relatedMovies;
         this.mRowLayout = rowLayout;
         this.mContext = context;

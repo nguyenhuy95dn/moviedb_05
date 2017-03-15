@@ -34,6 +34,7 @@ public class NowPlayingFragment extends Fragment {
     private List<Movie> mMovies = new ArrayList<>();
     private NowPlayingAdapter mAdapter;
     private RecyclerView mRecyclerView;
+    private LinearLayoutManager mLinearLayout;
 
     public static NowPlayingFragment newInstance() {
         return new NowPlayingFragment();
@@ -56,13 +57,28 @@ public class NowPlayingFragment extends Fragment {
 
     private void initViews(View v) {
         mRecyclerView = (RecyclerView) v.findViewById(R.id.recycler_now_playing);
+        mLinearLayout = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         setupRecycleView();
         requestDatas();
+        loadMoreData();
+    }
+
+    private void loadMoreData() {
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (mLinearLayout.findLastCompletelyVisibleItemPosition() == mMovies.size() - 1) {
+                    mPage++;
+                    requestDatas();
+                }
+            }
+        });
     }
 
     private void setupRecycleView() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mAdapter = new NowPlayingAdapter(mMovies, R.layout.item_list, getContext());
+        mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(Movie movie) {
@@ -80,7 +96,8 @@ public class NowPlayingFragment extends Fragment {
                 @Override
                 public void onResponse(Call<MoviesResponse> call,
                                        Response<MoviesResponse> response) {
-                    loadDataView(response.body());
+                    if (response == null || response.body() == null)
+                        loadDataView(response.body());
                 }
 
                 @Override
