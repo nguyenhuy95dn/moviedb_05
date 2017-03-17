@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener {
+    implements NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
     private TabLayout mTabLayout;
     private DrawerLayout mDrawerLayout;
     private ViewPager mViewPager;
@@ -75,15 +76,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search, menu);
+        MenuItem item = menu.findItem(R.id.menu_search);
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(this);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.menu_search) {
-            return true;
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -102,9 +102,22 @@ public class MainActivity extends AppCompatActivity
                 //TODO Exit
                 break;
             default:
+                finish();
+                System.exit(0);
                 break;
         }
         return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        startActivity(SearchActivity.searchIntent(this, query));
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

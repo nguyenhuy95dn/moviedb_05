@@ -20,4 +20,7 @@ public interface MovieService {
     @GET("genre/{genre_id}/movies")
     Call<RelatedMovieResponse> getRelatedMovie(@Path("genre_id") int genre_id,
                                                @Query("api_key") String apiKey);
+    @GET("search/movie")
+    Call<MoviesResponse> searchMovie(@Query("api_key") String apiKey, @Query("query") String
+        query, @Query("page") int page);
 }
