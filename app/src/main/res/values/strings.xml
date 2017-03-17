@@ -20,4 +20,8 @@
     <string name="title_related_movie">Related Movies</string>
     <string name="movie_detail">movie_detail</string>
     <string name="msg_error">Not load the data</string>
+    <string name="title_genre">Genres</string>
+    <string name="title_overview">Overview</string>
+    <string name="action_deleted">Deleted</string>
+    <string name="action_added">Added</string>
 </resources>

@@ -8,6 +8,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +17,7 @@ import com.framgia.moviedb_05.BuildConfig;
 import com.framgia.moviedb_05.R;
 import com.framgia.moviedb_05.data.model.Genre;
 import com.framgia.moviedb_05.data.model.Movie;
+import com.framgia.moviedb_05.data.model.MovieSQLite;
 import com.framgia.moviedb_05.data.model.RelatedMovie;
 import com.framgia.moviedb_05.data.model.RelatedMovieResponse;
 import com.framgia.moviedb_05.service.MovieService;
@@ -29,9 +32,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = DetailActivity.class.getSimpleName();
     private static final String EXTRA_MOVIE = "EXTRA_MOVIE";
+    MovieSQLite mSQLite = new MovieSQLite(this);
+    private int mLength_delele = 2;
     private CustomPagerAdapter mCustomPagerAdapter;
     private List<String> mImageUrl = new ArrayList<>();
     private ViewPager mViewPager;
@@ -40,6 +45,9 @@ public class DetailActivity extends AppCompatActivity {
     private RelatedMovieAdapter mRelatedMovieAdapter;
     private List<RelatedMovie> mRelatedMovies = new ArrayList<>();
     private TextView mOverview;
+    private TextView mTextGenre;
+    private ImageButton mButtonLike;
+    private ImageButton mButtonUnlike;
     private Movie mMovie;
 
     public static Intent getMovieIntent(Context context, Movie movie) {
@@ -64,7 +72,7 @@ public class DetailActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Movie> call, Response<Movie> response) {
                     if (response == null || response.body() == null)
-                    mOverview.setText(response.body().getOverview());
+                        mOverview.setText(response.body().getOverview());
                     loadListRelatedMovie(response.body());
                     loadViewPager(response.body());
                 }
@@ -87,6 +95,11 @@ public class DetailActivity extends AppCompatActivity {
     private void loadListRelatedMovie(Movie movie) {
         if (movie == null) return;
         mGenres = movie.getGenres();
+        String listGenres = "";
+        for (int i = 0; i < mGenres.size(); i++) {
+            listGenres += mGenres.get(i).getName() + ", ";
+        }
+        mTextGenre.setText(listGenres.substring(0, listGenres.length() - mLength_delele));
         ServiceGenerator.createService(MovieService.class)
             .getRelatedMovie(mGenres.get(0).getId(), BuildConfig.API_KEY)
             .enqueue(new Callback<RelatedMovieResponse>() {
@@ -94,7 +107,7 @@ public class DetailActivity extends AppCompatActivity {
                 public void onResponse(Call<RelatedMovieResponse> call,
                                        Response<RelatedMovieResponse> response) {
                     if (response == null || response.body() == null)
-                    loadRelatedDataView(response.body());
+                        loadRelatedDataView(response.body());
                 }
 
                 @Override
@@ -108,9 +121,13 @@ public class DetailActivity extends AppCompatActivity {
     private void initView() {
         mOverview = (TextView) findViewById(R.id.text_overview_description);
         mMovie = (Movie) getIntent().getSerializableExtra(EXTRA_MOVIE);
+        mButtonLike = (ImageButton) findViewById(R.id.button_like);
+        mButtonUnlike = (ImageButton) findViewById(R.id.button_unlike);
         setTitle(mMovie.getTitle());
         setupRecycleView();
         setupViewPager();
+        mButtonLike.setOnClickListener(this);
+        mButtonUnlike.setOnClickListener(this);
     }
 
     private void setupViewPager() {
@@ -133,5 +150,25 @@ public class DetailActivity extends AppCompatActivity {
         if (listRelated == null) return;
         mRelatedMovies.addAll(listRelated.getResults());
         mRelatedMovieAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_like:
+                mButtonLike.setVisibility(View.INVISIBLE);
+                mButtonUnlike.setVisibility(View.VISIBLE);
+                mSQLite.deleteFavorites(mMovie.getId());
+                Toast.makeText(getApplicationContext(), R.string.action_deleted, Toast.LENGTH_SHORT)
+                    .show();
+                break;
+            case R.id.button_unlike:
+                mButtonLike.setVisibility(View.VISIBLE);
+                mButtonUnlike.setVisibility(View.INVISIBLE);
+                mSQLite.insertFavorites(mMovie);
+                Toast.makeText(getApplicationContext(), R.string.action_added, Toast.LENGTH_SHORT)
+                    .show();
+                break;
+        }
     }
 }

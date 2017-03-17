@@ -1,10 +1,19 @@
 package com.framgia.moviedb_05.data.model;
 
+import android.database.Cursor;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.framgia.moviedb_05.data.model.MovieSQLite.COLUMN_FAVORITES;
+import static com.framgia.moviedb_05.data.model.MovieSQLite.COLUMN_ID;
+import static com.framgia.moviedb_05.data.model.MovieSQLite.COLUMN_OVERVIEW;
+import static com.framgia.moviedb_05.data.model.MovieSQLite.COLUMN_POSTER_PATH;
+import static com.framgia.moviedb_05.data.model.MovieSQLite.COLUMN_TITLE;
+import static com.framgia.moviedb_05.data.model.MovieSQLite.COLUMN_VOTE_AVERAGER;
 
 public class Movie implements Serializable {
     @SerializedName("poster_path")
@@ -23,16 +32,51 @@ public class Movie implements Serializable {
     private String mTitle;
     @SerializedName("backdrop_path")
     private String mBackdropPath;
+    @SerializedName("vote_average")
+    private String mVoteAverage;
+    private int mFavorites;
 
-    public Movie(String posterPath, String overview, String releaseDate, List<Integer> genreIds,
-                 Integer id, String title, String backdropPath) {
-        this.mPosterPath = posterPath;
-        this.mOverview = overview;
-        this.mReleaseDate = releaseDate;
-        this.mGenreIds = genreIds;
-        this.mId = id;
-        this.mTitle = title;
-        this.mBackdropPath = backdropPath;
+    public Movie() {
+    }
+
+    public Movie(String posterPath, String overview, String releaseDate,
+                 List<Integer> genreIds, List<Genre> genres, Integer id, String title,
+                 String backdropPath, String voteAverage, int favorites) {
+        mPosterPath = posterPath;
+        mOverview = overview;
+        mReleaseDate = releaseDate;
+        mGenreIds = genreIds;
+        mGenres = genres;
+        mId = id;
+        mTitle = title;
+        mBackdropPath = backdropPath;
+        mVoteAverage = voteAverage;
+        mFavorites = favorites;
+    }
+
+    public Movie(Cursor cursor) {
+        mId = Integer.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
+        mTitle = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE));
+        mOverview = cursor.getString(cursor.getColumnIndex(COLUMN_OVERVIEW));
+        mPosterPath = cursor.getString(cursor.getColumnIndex(COLUMN_POSTER_PATH));
+        mVoteAverage = cursor.getString(cursor.getColumnIndex(COLUMN_VOTE_AVERAGER));
+        mFavorites = Integer.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_FAVORITES)));
+    }
+
+    public String getVoteAverage() {
+        return mVoteAverage;
+    }
+
+    public void setVoteAverage(String voteAverage) {
+        mVoteAverage = voteAverage;
+    }
+
+    public int getFavorites() {
+        return mFavorites;
+    }
+
+    public void setFavorites(int favorites) {
+        mFavorites = favorites;
     }
 
     public String getPosterPath() {

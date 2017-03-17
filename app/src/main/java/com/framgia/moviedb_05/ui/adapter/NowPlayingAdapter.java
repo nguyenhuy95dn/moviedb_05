@@ -54,23 +54,24 @@ public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mTitle;
-        private TextView mType;
-        private TextView mDate;
+        private TextView mOverview;
         private ImageView mImageView;
+        private TextView mTextvote;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mTitle = (TextView) itemView.findViewById(R.id.text_title);
-            mType = (TextView) itemView.findViewById(R.id.text_type);
-            mDate = (TextView) itemView.findViewById(R.id.text_date);
+            mOverview = (TextView) itemView.findViewById(R.id.text_overview);
             mImageView = (ImageView) itemView.findViewById(R.id.image_item);
+            mTextvote = (TextView) itemView.findViewById(R.id.text_vote_average);
             itemView.setOnClickListener(this);
         }
 
         public void bindData(Movie movie) {
             if (movie == null) return;
             mTitle.setText(movie.getTitle());
-            mDate.setText(movie.getReleaseDate());
+            mOverview.setText(movie.getOverview());
+            mTextvote.setText(movie.getVoteAverage());
             Picasso.with(mContext)
                 .load(ServiceGenerator.BASE_IMAGE_URL + movie.getBackdropPath())
                 .placeholder(R.drawable.bg_no_img)

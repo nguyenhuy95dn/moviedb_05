@@ -34,6 +34,7 @@ public class NowPlayingFragment extends Fragment {
     private List<Movie> mMovies = new ArrayList<>();
     private NowPlayingAdapter mAdapter;
     private RecyclerView mRecyclerView;
+    private LinearLayoutManager mLinearLayout;
 
     public static NowPlayingFragment newInstance() {
         return new NowPlayingFragment();
@@ -56,9 +57,23 @@ public class NowPlayingFragment extends Fragment {
 
     private void initViews(View v) {
         mRecyclerView = (RecyclerView) v.findViewById(R.id.recycler_now_playing);
+        mLinearLayout = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         setupRecycleView();
         requestDatas();
+        loadMoreData();
+    }
+
+    private void loadMoreData() {
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (mLinearLayout.findLastCompletelyVisibleItemPosition() == mMovies.size() - 1) {
+                    mPage++;
+                    requestDatas();
+                }
+            }
+        });
     }
 
     private void setupRecycleView() {
@@ -82,7 +97,7 @@ public class NowPlayingFragment extends Fragment {
                 public void onResponse(Call<MoviesResponse> call,
                                        Response<MoviesResponse> response) {
                     if (response == null || response.body() == null)
-                    loadDataView(response.body());
+                        loadDataView(response.body());
                 }
 
                 @Override
